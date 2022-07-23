@@ -1,3 +1,42 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "no-use-before-define": [0],
+    "react/no-array-index-key": 0,
+    "react/jsx-fragments": ["off", "element"],
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": 0,
+    "react/require-default-props": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
+    "@typescript-eslint/no-use-before-define": [1],
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for": "off",
+    "default-param-last": "off",
+    "react/function-component-definition": [0],
+    "arrow-body-style": "off",
+    "no-param-reassign": "off",
+    "react/no-unstable-nested-components": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 }
