@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
@@ -52,39 +52,31 @@ function initColor(parent: any, type: string, mtl: MeshPhongMaterial) {
   });
 }
 
-// 'http://localhost:3000/models/chair.glb'
+const modelPath = 'http://localhost:3000/models/chair.glb';
 
-const modelPath = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1376484/chair.glb';
+// const modelPath = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/1376484/chair.glb';
 
 const Home: NextPage = () => {
   const [activePart, setActivePart] = useState(partsOptions[0].option);
   const [loading, setLoading] = useState(true);
 
-  const gltf = useMemo(() => {
-    const gltf2 = useGLTF(modelPath, true);
-    gltf2.scene.traverse((o: any) => {
+  const gltf = useGLTF(modelPath, true, undefined, () => {
+    setLoading(false);
+  });
+
+  useLayoutEffect(() => {
+    gltf.scene.traverse((o: any) => {
       if (o.isMesh) {
         o.castShadow = true;
         o.receiveShadow = true;
       }
     });
 
-    // Set the models initial scale
-    gltf2.scene.scale.set(2, 2, 2);
-
-    // rotate the model
-    gltf2.scene.rotation.y = Math.PI;
-
-    // Offset the y position a bit
-    gltf2.scene.position.y = -1;
-
     for (let i = 0; i < INITIAL_MAP.length; i += 1) {
-      initColor(gltf2.scene, INITIAL_MAP[i].childID, INITIAL_MAP[i].mtl);
+      initColor(gltf.scene, INITIAL_MAP[i].childID, INITIAL_MAP[i].mtl);
     }
-
     setLoading(false);
-    return gltf2;
-  }, []);
+  }, [gltf.scene]);
 
   const handleColorChange = (color: string) => {
     const newMtl = new MeshPhongMaterial({
@@ -144,7 +136,12 @@ const Home: NextPage = () => {
           />
           <spotLight intensity={0.3} position={[-8, 1000, 8]} />
 
-          <primitive object={gltf.scene} />
+          <primitive
+            position={[0, -1, 0]}
+            rotate={[0, Math.PI, 0]}
+            scale={[2, 2, 2]}
+            object={gltf.scene}
+          />
 
           <mesh receiveShadow rotation={[-0.5 * Math.PI, 0, 0]} position={[0, -1, 0]}>
             <planeGeometry args={[5000, 5000, 1, 1]} />
@@ -153,6 +150,7 @@ const Home: NextPage = () => {
           </mesh>
         </Canvas>
       )}
+
       <div className="controls">
         <div id="js-tray" className="tray">
           <div id="js-tray-slide" className="tray__slide">
