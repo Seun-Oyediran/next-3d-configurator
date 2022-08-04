@@ -1,8 +1,8 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { OrbitControls, useGLTF } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { MeshPhongMaterial } from 'three';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { BufferGeometry, Material, Mesh, MeshPhongMaterial } from 'three';
 
 const BACKGROUND_COLOR = 0xf1f1f1;
 
@@ -51,6 +51,26 @@ function initColor(parent: any, type: string, mtl: MeshPhongMaterial) {
     }
   });
 }
+
+const BoxShape = () => {
+  const meshRef = useRef<Mesh<BufferGeometry, Material | Material[]>>(null);
+
+  useFrame(() => {
+    // console.log(state);
+
+    if (meshRef.current) {
+      meshRef.current.rotation.x += 0.01;
+      meshRef.current.rotation.y += 0.01;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={[0, 3, 0]}>
+      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial attach="material" color="red" />
+    </mesh>
+  );
+};
 
 const modelPath = 'http://localhost:3000/models/chair.glb';
 
@@ -142,6 +162,7 @@ const Home: NextPage = () => {
             scale={[2, 2, 2]}
             object={gltf.scene}
           />
+          <BoxShape />
 
           <mesh receiveShadow rotation={[-0.5 * Math.PI, 0, 0]} position={[0, -1, 0]}>
             <planeGeometry args={[5000, 5000, 1, 1]} />

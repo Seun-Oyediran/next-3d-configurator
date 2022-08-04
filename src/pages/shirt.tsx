@@ -6,22 +6,22 @@ const ModelComponent = lazy(() => import('../components/ShirtModel'));
 
 const Shirt = () => {
   return (
-    <Suspense fallback="loading">
-      <div className="body">
-        <Canvas
-          shadows
-          id="c"
-          className="canvas"
-          camera={{
-            fov: 50,
-            near: 0.1,
-            far: 1000,
-            position: [0, 0, 5],
-          }}
-          gl={{
-            antialias: true,
-          }}
-        >
+    <div className="body">
+      <Canvas
+        shadows
+        id="c"
+        className="canvas"
+        camera={{
+          fov: 50,
+          near: 0.1,
+          far: 1000,
+          position: [0, 0, 5],
+        }}
+        gl={{
+          antialias: true,
+        }}
+      >
+        <Suspense>
           <color attach="background" args={[0xffffff]} />
           <ModelComponent color="purple" />
           <OrbitControls
@@ -53,9 +53,9 @@ const Shirt = () => {
             <meshPhongMaterial color="#eeeeee" shininess={0} />
             <shadowMaterial attach="material" opacity={0.4} />
           </mesh>
-        </Canvas>
-      </div>
-    </Suspense>
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 
