@@ -6,14 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint --fix {src,test}/**/*.{js,ts,jsx,tsx} --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "@react-three/drei": "^9.17.3",
     "@react-three/fiber": "^8.2.1",
+    "matter-js": "^0.18.0",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-matter-js": "^1.0.5",
     "three": "^0.142.0"
   },
   "devDependencies": {
