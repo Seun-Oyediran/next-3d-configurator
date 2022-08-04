@@ -2,7 +2,9 @@ import React, { useLayoutEffect, useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { BufferGeometry, Material, Mesh, MeshPhongMaterial } from 'three';
+import {
+  BufferGeometry, Material, Mesh, MeshPhongMaterial,
+} from 'three';
 
 const BACKGROUND_COLOR = 0xf1f1f1;
 
